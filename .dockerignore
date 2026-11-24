@@ -1,0 +1,12 @@
+.git
+.env
+.venv
+__pycache__
+*.pyc
+*.pyo
+node_modules
+staticfiles
+.pytest_cache
+.coverage
+*.pem
+*.age

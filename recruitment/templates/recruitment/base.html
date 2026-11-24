@@ -1,0 +1,16 @@
+{% load static tailwind_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Privacy-first recruitment{% endblock %}</title>
+  {% tailwind_css %}
+  {% block scripts %}{% endblock %}
+</head>
+<body class="bg-slate-50 text-slate-950">
+  <main class="mx-auto max-w-4xl space-y-6 p-6">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

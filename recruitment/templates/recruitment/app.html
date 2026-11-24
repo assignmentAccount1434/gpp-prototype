@@ -1,0 +1,121 @@
+{% extends "recruitment/base.html" %}
+{% load static %}
+
+{% block scripts %}
+<script src="{% static 'recruitment/age.js' %}"></script>
+<script type="module" src="{% static 'recruitment/app.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold">Privacy-first recruitment</h1>
+
+<p>
+  Initial review collects only job-relevant experience, education, and skills.
+  Do not include names, employer or institution names, contact details,
+  photographs, demographic information, or other identifying details.
+</p>
+
+<p>
+  Encryption protects content, not all metadata. Recipients can save information
+  they decrypt. Restricting fields does not eliminate hiring bias.
+</p>
+
+<p id="message" role="status" aria-live="polite"></p>
+<p id="problem" role="alert"></p>
+
+<form id="logout" method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Log out and clear local review</button>
+</form>
+
+<section id="recruit" hidden>
+  <h2 class="text-2xl font-semibold">New encrypted submission</h2>
+
+  <form id="submission">
+    <label for="company">Destination company</label>
+    <select id="company" required></select>
+
+    <fieldset id="recipients">
+      <legend>Intended recipients</legend>
+    </fieldset>
+
+    <p>
+      Verify recipient IDs and full public-key fingerprints through an
+      independently authenticated company channel.
+    </p>
+
+    <label>
+      <input id="verified" type="checkbox" required>
+      I independently verified the selected recipients and fingerprints.
+    </label>
+
+    <h3>Experience</h3>
+    <div id="experience"></div>
+    <button type="button" data-add="experience">Add experience</button>
+
+    <h3>Education</h3>
+    <div id="education"></div>
+    <button type="button" data-add="education">Add education</button>
+
+    <h3>Skills</h3>
+    <div id="skills"></div>
+    <button type="button" data-add="skills">Add skill</button>
+
+    <p>
+      No résumé uploads are supported. Your account email is stored separately
+      and is not included in this encrypted submission.
+    </p>
+
+    <button id="submit-button" type="submit">Encrypt locally and submit</button>
+  </form>
+
+  <h2 class="text-2xl font-semibold">Submission history</h2>
+  <p>
+    Deletion removes live records. Revocation blocks future downloads but
+    cannot remove copies already downloaded.
+  </p>
+  <div id="history"></div>
+</section>
+
+<section id="recruiter" hidden>
+  <h2 class="text-2xl font-semibold">Public-key management</h2>
+
+  <form id="key-form">
+    <label for="public-key">Public recipient key</label>
+    <input id="public-key" autocomplete="off" required maxlength="62">
+    <p>Native age public recipient key only. Never upload a private key.</p>
+    <button type="submit">Publish public recipient key</button>
+  </form>
+
+  <div id="keys"></div>
+
+  <h2 class="text-2xl font-semibold">Local submission review</h2>
+
+  <label for="identity-file">Local decryption identity file</label>
+  <input id="identity-file" type="file">
+  <p>
+    Read only in this browser, never uploaded. Select an unencrypted native age
+    identity file. It is cleared after each page; reselect it for another page.
+  </p>
+
+  <button id="load" type="button">Load next page and decrypt locally</button>
+  <button id="clear" type="button">Clear local review and restart loading</button>
+
+  <p id="scope" role="status"></p>
+
+  <label for="search">Search experience and skill names</label>
+  <input id="search" type="search" autocomplete="off">
+  <p>All keywords must match. Education is not searched. No scores or ranking.</p>
+
+  <div id="results"></div>
+</section>
+
+<section>
+  <h2 class="text-2xl font-semibold">Contact requests</h2>
+  <p>
+    Accepting shares your account email with the requesting recruiter.
+    Ordinary email is outside the submission encryption protection.
+  </p>
+  <div id="contacts"></div>
+</section>
+{% endblock %}
